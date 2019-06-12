@@ -18,4 +18,9 @@ class Index
     {
         return 'hello,' . $name;
     }
+
+    function swoole_hello(){
+        echo "swoole_hello".PHP_EOL;
+
+    }
 }

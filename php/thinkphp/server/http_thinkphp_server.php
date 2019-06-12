@@ -22,7 +22,7 @@ $http_think->on("WorkerStart",function(swoole_server $server,$worker_id){
 
 });
 
-$http_think->on("request",function($request,$response){
+$http_think->on("request",function($request,$response) use ($http_think){
     //$request 请求处理
     //$response 返回给client端的
     //转换成原生的$REQESTduixiang
@@ -60,12 +60,16 @@ $http_think->on("request",function($request,$response){
             ->run()
             ->send();
 
-    }catch (Exception $e){
+    }catch (\Exception $e){
         var_dump($e);
     }
     $response_thinkphp_res = ob_get_contents();
     ob_end_clean();
     $response->end($response_thinkphp_res);
+    //路由变更,而访问的结果不变
+    //原因,swoole会缓存路由信息
+    $http_think->close();
+
 
 });
 
