@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Swoole</title>
+</head>
+<body>
+<h3>This Websocket 测试</h3>
+<script  type="text/javascript">
+
+
+    var websocket_url = "ws://127.0.0.1:81";
+    var ws = new WebSocket(websocket_url);
+    ws.onopen=function(evt){
+        ws.send("hello- swoole-websocket from client static html");
+        console.log("conected-swoole-success");
+    }
+    //实例化onmessage
+    ws.onmessage=function(evt){
+        console.log("ws-server-return-data:"+evt.data);
+    }
+    ws.onclose=function(evt){
+        console.log("close");
+    }
+    ws.onerror=function(evt){
+        console.log("error:"+evt.data);
+    }
+</script>
+</body>
+</html>
