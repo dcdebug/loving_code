@@ -30,26 +30,25 @@ $http_think->on("request",function($request,$response) use ($http_think){
     //$request 请求处理
     //$response 返回给client端的
     //转换成原生的$REQESTduixiang
-
-    if(isset($request->request)){
-        foreach($request->request as $k=>$value){
+    $_SERVER=[];
+    if(isset($request->server)){
+        foreach($request->server as $k=>$value){
             $_SERVER[strtoupper($k)]=$value;
         }
     }
     //header头
     if(isset($request->header)){
-
         foreach($request->header as $key=>$value){
             $_SERVER[strtoupper($key)]=$value;
         }
     }
-    $_GET=array(); //全局变量没有释放哦
+    $_GET=[]; //全局变量没有释放哦
     if(isset($request->get)){
         foreach($request->get as $key=>$value){
             $_GET[$key]=$value;
         }
     }
-
+    $_POST=[];
     if(isset($request->post)){
         foreach($request->post as $key=>$value){
             $_POST[$key]=$value;
@@ -60,7 +59,7 @@ $http_think->on("request",function($request,$response) use ($http_think){
     ob_start();
     try{
         // 执行应用并响应
-        think\Container::get('app', [defined('APP_PATH') ? APP_PATH : ''])
+        think\Container::get('app', [APP_PATH])
             ->run()
             ->send();
 

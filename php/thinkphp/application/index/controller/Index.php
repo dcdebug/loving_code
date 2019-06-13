@@ -6,6 +6,7 @@ class Index
     public function index()
     {
 
+        //echo "index".__FUNCTION__;
         return 'hello swoole'.PHP_EOL;
         //echo "Hello_world".PHP_EOL;
         //return "dc-hello".PHP_EOL;
@@ -14,6 +15,7 @@ class Index
 
     public function hello($name = 'ThinkPHP5')
     {
+        echo "hello-".__FUNCTION__;
         return 'hello,' . $name;
     }
 
