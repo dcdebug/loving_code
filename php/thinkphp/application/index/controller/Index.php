@@ -6,8 +6,6 @@ class Index
     public function index()
     {
 
-        print_r($_GET);
-        echo "hello swoole";
         return 'hello swoole'.PHP_EOL;
         //echo "Hello_world".PHP_EOL;
         //return "dc-hello".PHP_EOL;
