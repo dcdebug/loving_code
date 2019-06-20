@@ -15,7 +15,7 @@ class Index
 
     public function hello($name = 'ThinkPHP5')
     {
-        echo "hello-".__FUNCTION__;
+        echo "hello-".__FUNCTION__."<hr/>"."return the name :";
         return 'hello,' . $name;
     }
 
