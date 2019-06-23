@@ -8,15 +8,15 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+namespace think;
 
-namespace think\facade;
+// ThinkPHP 引导文件
+// 加载基础文件
+require __DIR__ . '/base.php';
 
-use think\Facade;
+// 支持事先使用静态方法设置Request对象和Config对象
 
-/**
- * @see \think\Request
- * @mixin \think\Request
- */
-class Request extends Facade
-{
-}
+// 执行应用并响应
+Container::get('app', [defined('APP_PATH') ? APP_PATH : ''])
+    ->run()
+    ->send();

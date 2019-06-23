@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -21,16 +21,13 @@ use think\facade\Cache;
 use think\facade\Config;
 use think\facade\Cookie;
 use think\facade\Debug;
-use think\facade\Env;
 use think\facade\Hook;
 use think\facade\Lang;
 use think\facade\Log;
 use think\facade\Request;
-use think\facade\Route;
 use think\facade\Session;
 use think\facade\Url;
 use think\Response;
-use think\route\RuleItem;
 
 if (!function_exists('abort')) {
     /**
@@ -69,12 +66,11 @@ if (!function_exists('app')) {
      * 快速获取容器中的实例 支持依赖注入
      * @param string    $name 类名或标识 默认获取当前应用实例
      * @param array     $args 参数
-     * @param bool      $newInstance    是否每次创建新的实例
-     * @return mixed|\think\App
+     * @return object
      */
-    function app($name = 'think\App', $args = [], $newInstance = false)
+    function app($name = 'think\App', $args = [])
     {
-        return Container::get($name, $args, $newInstance);
+        return Container::getInstance()->make($name, $args);
     }
 }
 
@@ -101,7 +97,7 @@ if (!function_exists('bind')) {
      */
     function bind($abstract, $concrete = null)
     {
-        return Container::getInstance()->bindTo($abstract, $concrete);
+        return Container::getInstance()->bind($abstract, $concrete);
     }
 }
 
@@ -130,19 +126,19 @@ if (!function_exists('cache')) {
         } elseif (is_null($value)) {
             // 删除缓存
             return Cache::rm($name);
-        }
-
-        // 缓存数据
-        if (is_array($options)) {
-            $expire = isset($options['expire']) ? $options['expire'] : null; //修复查询缓存无法设置过期时间
         } else {
-            $expire = is_numeric($options) ? $options : null; //默认快捷缓存设置过期时间
-        }
+            // 缓存数据
+            if (is_array($options)) {
+                $expire = isset($options['expire']) ? $options['expire'] : null; //修复查询缓存无法设置过期时间
+            } else {
+                $expire = is_numeric($options) ? $options : null; //默认快捷缓存设置过期时间
+            }
 
-        if (is_null($tag)) {
-            return Cache::set($name, $value, $expire);
-        } else {
-            return Cache::tag($tag)->set($name, $value, $expire);
+            if (is_null($tag)) {
+                return Cache::set($name, $value, $expire);
+            } else {
+                return Cache::tag($tag)->set($name, $value, $expire);
+            }
         }
     }
 }
@@ -304,21 +300,6 @@ if (!function_exists('debug')) {
     }
 }
 
-if (!function_exists('download')) {
-    /**
-     * 获取\think\response\Download对象实例
-     * @param string  $filename 要下载的文件
-     * @param string  $name 显示文件名
-     * @param bool    $content 是否为内容
-     * @param integer $expire 有效期（秒）
-     * @return \think\response\Download
-     */
-    function download($filename, $name = '', $content = false, $expire = 360, $openinBrowser = false)
-    {
-        return Response::create($filename, 'download')->name($name)->isContent($content)->expire($expire)->openinBrowser($openinBrowser);
-    }
-}
-
 if (!function_exists('dump')) {
     /**
      * 浏览器友好的变量输出
@@ -330,20 +311,6 @@ if (!function_exists('dump')) {
     function dump($var, $echo = true, $label = null)
     {
         return Debug::dump($var, $echo, $label);
-    }
-}
-
-if (!function_exists('env')) {
-    /**
-     * 获取环境变量值
-     * @access public
-     * @param  string    $name 环境变量名（支持二级 .号分割）
-     * @param  string    $default  默认值
-     * @return mixed
-     */
-    function env($name = null, $default = null)
-    {
-        return Env::get($name, $default);
     }
 }
 
@@ -385,7 +352,7 @@ if (!function_exists('input')) {
      * @param string    $filter 过滤方法
      * @return mixed
      */
-    function input($key = '', $default = null, $filter = '')
+    function input($key = '', $default = null, $filter = null)
     {
         if (0 === strpos($key, '?')) {
             $key = substr($key, 1);
@@ -533,24 +500,9 @@ if (!function_exists('response')) {
      * @param string     $type
      * @return Response
      */
-    function response($data = '', $code = 200, $header = [], $type = 'html')
+    function response($data = [], $code = 200, $header = [], $type = 'html')
     {
         return Response::create($data, $type, $code, $header);
-    }
-}
-
-if (!function_exists('route')) {
-    /**
-     * 路由注册
-     * @param  string    $rule       路由规则
-     * @param  mixed     $route      路由地址
-     * @param  array     $option     路由参数
-     * @param  array     $pattern    变量规则
-     * @return RuleItem
-     */
-    function route($rule, $route, $option = [], $pattern = [])
-    {
-        return Route::rule($rule, $route, '*', $option, $pattern);
     }
 }
 
@@ -603,7 +555,7 @@ if (!function_exists('trace')) {
      * 记录日志信息
      * @param mixed     $log log信息 支持字符串和数组
      * @param string    $level 日志级别
-     * @return array|void
+     * @return void|array
      */
     function trace($log = '[think]', $level = 'log')
     {
@@ -667,13 +619,13 @@ if (!function_exists('view')) {
      * 渲染模板输出
      * @param string    $template 模板文件
      * @param array     $vars 模板变量
+     * @param array     $replace 模板替换
      * @param integer   $code 状态码
-     * @param callable  $filter 内容过滤
      * @return \think\response\View
      */
-    function view($template = '', $vars = [], $code = 200, $filter = null)
+    function view($template = '', $vars = [], $replace = [], $code = 200)
     {
-        return Response::create($template, 'view', $code)->assign($vars)->filter($filter);
+        return Response::create($template, 'view', $code)->replace($replace)->assign($vars);
     }
 }
 
@@ -702,19 +654,5 @@ if (!function_exists('xml')) {
     function xml($data = [], $code = 200, $header = [], $options = [])
     {
         return Response::create($data, 'xml', $code, $header, $options);
-    }
-}
-
-if (!function_exists('yaconf')) {
-    /**
-     * 获取yaconf配置
-     *
-     * @param  string    $name 配置参数名
-     * @param  mixed     $default   默认值
-     * @return mixed
-     */
-    function yaconf($name, $default = null)
-    {
-        return Config::yaconf($name, $default);
     }
 }

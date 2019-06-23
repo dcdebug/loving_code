@@ -1,4 +1,12 @@
 <?php
+
+class http_server{
+
+    public function __construct()
+    {
+
+    }
+}
 //对于在    $http_think->close();的时候，console平台会出现报错的问题，
 //swoole在代码中关闭了$http_think ,但是有重新重启了进程使其整体能够满足：worker_num的
 $http_think = new swoole_http_server('0.0.0.0',88);

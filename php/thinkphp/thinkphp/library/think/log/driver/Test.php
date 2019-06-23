@@ -1,22 +1,30 @@
 <?php
 // +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
+// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006-2016 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-namespace think\facade;
-
-use think\Facade;
+namespace think\log\driver;
 
 /**
- * @see \think\Request
- * @mixin \think\Request
+ * 模拟测试输出
  */
-class Request extends Facade
+class Test
 {
+    /**
+     * 日志写入接口
+     * @access public
+     * @param array $log 日志信息
+     * @return bool
+     */
+    public function save(array $log = [])
+    {
+        return true;
+    }
+
 }

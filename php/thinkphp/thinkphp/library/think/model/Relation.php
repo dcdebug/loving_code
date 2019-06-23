@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -35,8 +35,6 @@ abstract class Relation
     protected $localKey;
     // 基础查询
     protected $baseQuery;
-    // 是否为自关联
-    protected $selfRelation;
 
     /**
      * 获取关联的所属模型
@@ -59,41 +57,9 @@ abstract class Relation
     }
 
     /**
-     * 获取当前的关联模型类的实例
-     * @access public
-     * @return Query
-     */
-    public function getQuery()
-    {
-        return $this->query;
-    }
-
-    /**
-     * 设置当前关联为自关联
-     * @access public
-     * @param  bool $self 是否自关联
-     * @return $this
-     */
-    public function selfRelation($self = true)
-    {
-        $this->selfRelation = $self;
-        return $this;
-    }
-
-    /**
-     * 当前关联是否为自关联
-     * @access public
-     * @return bool
-     */
-    public function isSelfRelation()
-    {
-        return $this->selfRelation;
-    }
-
-    /**
      * 封装关联数据集
      * @access public
-     * @param  array $resultSet 数据集
+     * @param array $resultSet 数据集
      * @return mixed
      */
     protected function resultSetBuild($resultSet)
@@ -129,38 +95,12 @@ abstract class Relation
 
     protected function getQueryWhere(&$where, $relation)
     {
-        foreach ($where as $key => &$val) {
+        foreach ($where as $key => $val) {
             if (is_string($key)) {
                 $where[] = [false === strpos($key, '.') ? $relation . '.' . $key : $key, '=', $val];
                 unset($where[$key]);
-            } elseif (isset($val[0]) && false === strpos($val[0], '.')) {
-                $val[0] = $relation . '.' . $val[0];
             }
         }
-    }
-
-    /**
-     * 更新数据
-     * @access public
-     * @param  array $data 更新数据
-     * @return integer|string
-     */
-    public function update(array $data = [])
-    {
-        return $this->query->update($data);
-    }
-
-    /**
-     * 删除记录
-     * @access public
-     * @param  mixed $data 表达式 true 表示强制删除
-     * @return int
-     * @throws Exception
-     * @throws PDOException
-     */
-    public function delete($data = null)
-    {
-        return $this->query->delete($data);
     }
 
     /**
@@ -168,8 +108,7 @@ abstract class Relation
      * @access protected
      * @return void
      */
-    protected function baseQuery()
-    {}
+    abstract protected function baseQuery();
 
     public function __call($method, $args)
     {
@@ -177,9 +116,7 @@ abstract class Relation
             // 执行基础查询
             $this->baseQuery();
 
-            $result = call_user_func_array([$this->query->getModel(), $method], $args);
-
-            return $result === $this->query && !in_array(strtolower($method), ['fetchsql', 'fetchpdo']) ? $this : $result;
+            return call_user_func_array([$this->query->getModel(), $method], $args);
         } else {
             throw new Exception('method not exists:' . __CLASS__ . '->' . $method);
         }

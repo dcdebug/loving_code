@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -17,27 +17,26 @@ use think\route\Dispatch;
 
 class Url extends Dispatch
 {
-    public function init()
+    public function run()
     {
         // 解析默认的URL规则
-        $result = $this->parseUrl($this->dispatch);
+        $url    = str_replace($this->param['depr'], '|', $this->dispatch);
+        $result = $this->parseUrl($url);
 
-        return (new Module($this->request, $this->rule, $result))->init();
+        return (new Module($result))->run();
     }
-
-    public function exec()
-    {}
 
     /**
      * 解析URL地址
      * @access protected
-     * @param  string   $url URL
+     * @param string    $url URL
      * @return array
      */
     protected function parseUrl($url)
     {
-        $depr = $this->rule->getConfig('pathinfo_depr');
-        $bind = $this->rule->getRouter()->getBind();
+        $router = $this->app['route'];
+        $bind   = $router->getBind();
+        $depr   = $this->param['depr'];
 
         if (!empty($bind) && preg_match('/^[a-z]/is', $bind)) {
             $bind = str_replace('/', $depr, $bind);
@@ -45,14 +44,13 @@ class Url extends Dispatch
             $url = $bind . ('.' != substr($bind, -1) ? $depr : '') . ltrim($url, $depr);
         }
 
-        list($path, $var) = $this->rule->parseUrlPath($url);
+        list($path, $var) = $this->parseUrlPath($url);
         if (empty($path)) {
             return [null, null, null];
         }
 
         // 解析模块
-        $module = $this->rule->getConfig('app_multi_module') ? array_shift($path) : null;
-
+        $module = $this->app->config('app_multi_module') ? array_shift($path) : null;
         if ($this->param['auto_search']) {
             $controller = $this->autoFindController($module, $path);
         } else {
@@ -60,16 +58,12 @@ class Url extends Dispatch
             $controller = !empty($path) ? array_shift($path) : null;
         }
 
-        if ($controller && !preg_match('/^[A-Za-z][\w|\.]*$/', $controller)) {
-            throw new HttpException(404, 'controller not exists:' . $controller);
-        }
-
         // 解析操作
         $action = !empty($path) ? array_shift($path) : null;
 
         // 解析额外参数
         if ($path) {
-            if ($this->rule->getConfig('url_param_type')) {
+            if ($this->app['config']->get('url_param_type')) {
                 $var += $path;
             } else {
                 preg_replace_callback('/(\w+)\|([^\|]+)/', function ($match) use (&$var) {
@@ -78,15 +72,8 @@ class Url extends Dispatch
             }
         }
 
-        $panDomain = $this->request->panDomain();
-
-        if ($panDomain && $key = array_search('*', $var)) {
-            // 泛域名赋值
-            $var[$key] = $panDomain;
-        }
-
         // 设置当前请求的参数
-        $this->request->setRouteVars($var);
+        $this->app['request']->route($var);
 
         // 封装路由
         $route = [$module, $controller, $action];
@@ -101,8 +88,8 @@ class Url extends Dispatch
     /**
      * 检查URL是否已经定义过路由
      * @access protected
-     * @param  string    $route  路由信息
-     * @param  string    $bind   绑定信息
+     * @param string    $route  路由信息
+     * @param string    $bind   绑定信息
      * @return bool
      */
     protected function hasDefinedRoute($route, $bind)
@@ -118,11 +105,9 @@ class Url extends Dispatch
             $name2 = strtolower(Loader::parseName($controller, 1) . '/' . $action);
         }
 
-        $host = $this->request->host(true);
+        $router = $this->app['route'];
 
-        $method = $this->request->method();
-
-        if ($this->rule->getRouter()->getName($name, $host, $method) || $this->rule->getRouter()->getName($name2, $host, $method)) {
+        if ($router->getName($name) || $router->getName($name2)) {
             return true;
         }
 
@@ -132,14 +117,14 @@ class Url extends Dispatch
     /**
      * 自动定位控制器类
      * @access protected
-     * @param  string    $module 模块名
-     * @param  array     $path   URL
+     * @param string    $module 模块名
+     * @param array     $path   URL
      * @return string
      */
     protected function autoFindController($module, &$path)
     {
-        $dir    = $this->app->getAppPath() . ($module ? $module . '/' : '') . $this->rule->getConfig('url_controller_layer');
-        $suffix = $this->app->getSuffix() || $this->rule->getConfig('controller_suffix') ? ucfirst($this->rule->getConfig('url_controller_layer')) : '';
+        $dir    = $this->app->getAppPath() . ($module ? $module . '/' : '') . $this->app->config('url_controller_layer');
+        $suffix = $this->app->getSuffix() || $this->app->config('controller_suffix') ? ucfirst($this->app->config('url_controller_layer')) : '';
 
         $item = [];
         $find = false;
@@ -166,4 +151,34 @@ class Url extends Dispatch
         return $controller;
     }
 
+    /**
+     * 解析URL的pathinfo参数和变量
+     * @access private
+     * @param string    $url URL地址
+     * @return array
+     */
+    private function parseUrlPath($url)
+    {
+        // 分隔符替换 确保路由定义使用统一的分隔符
+        $url = str_replace('|', '/', $url);
+        $url = trim($url, '/');
+        $var = [];
+
+        if (false !== strpos($url, '?')) {
+            // [模块/控制器/操作?]参数1=值1&参数2=值2...
+            $info = parse_url($url);
+            $path = explode('/', $info['path']);
+            parse_str($info['query'], $var);
+        } elseif (strpos($url, '/')) {
+            // [模块/控制器/操作]
+            $path = explode('/', $url);
+        } elseif (false !== strpos($url, '=')) {
+            // 参数1=值1&参数2=值2...
+            parse_str($url, $var);
+        } else {
+            $path = [$url];
+        }
+
+        return [$path, $var];
+    }
 }

@@ -12,9 +12,7 @@
 namespace think\db\builder;
 
 use think\db\Builder;
-use think\db\Expression;
 use think\db\Query;
-use think\Exception;
 
 /**
  * Sqlsrv数据库驱动
@@ -31,45 +29,40 @@ class Sqlsrv extends Builder
     /**
      * order分析
      * @access protected
-     * @param  Query     $query        查询对象
-     * @param  mixed     $order
+     * @param Query     $query        查询对象
+     * @param mixed     $order
      * @return string
      */
     protected function parseOrder(Query $query, $order)
     {
-        if (empty($order)) {
-            return ' ORDER BY rand()';
-        }
+        if (is_array($order)) {
+            $array = [];
 
-        foreach ($order as $key => $val) {
-            if ($val instanceof Expression) {
-                $array[] = $val->getValue();
-            } elseif ('[rand]' == $val) {
-                $array[] = $this->parseRand($query);
-            } else {
+            foreach ($order as $key => $val) {
                 if (is_numeric($key)) {
-                    list($key, $sort) = explode(' ', strpos($val, ' ') ? $val : $val . ' ');
+                    if (false === strpos($val, '(')) {
+                        $array[] = $this->parseKey($query, $val);
+                    } elseif ('[rand]' == $val) {
+                        $array[] = $this->parseRand($query);
+                    } else {
+                        $array[] = $val;
+                    }
                 } else {
-                    $sort = $val;
-                }
-
-                if (preg_match('/^[\w\.]+$/', $key)) {
-                    $sort    = strtoupper($sort);
-                    $sort    = in_array($sort, ['ASC', 'DESC'], true) ? ' ' . $sort : '';
-                    $array[] = $this->parseKey($query, $key, true) . $sort;
-                } else {
-                    throw new Exception('order express error:' . $key);
+                    $sort    = in_array(strtolower(trim($val)), ['asc', 'desc']) ? ' ' . $val : '';
+                    $array[] = $this->parseKey($query, $key) . ' ' . $sort;
                 }
             }
+
+            $order = implode(',', $array);
         }
 
-        return empty($array) ? '' : ' ORDER BY ' . implode(',', $array);
+        return !empty($order) ? ' ORDER BY ' . $order : ' ORDER BY rand()';
     }
 
     /**
      * 随机排序
      * @access protected
-     * @param  Query     $query        查询对象
+     * @param Query     $query        查询对象
      * @return string
      */
     protected function parseRand(Query $query)
@@ -79,42 +72,26 @@ class Sqlsrv extends Builder
 
     /**
      * 字段和表名处理
-     * @access public
-     * @param  Query     $query     查询对象
-     * @param  mixed     $key       字段名
-     * @param  bool      $strict   严格检测
+     * @access protected
+     * @param Query     $query        查询对象
+     * @param string    $key
      * @return string
      */
-    public function parseKey(Query $query, $key, $strict = false)
+    protected function parseKey(Query $query, $key)
     {
-        if (is_numeric($key)) {
-            return $key;
-        } elseif ($key instanceof Expression) {
-            return $key->getValue();
-        }
-
         $key = trim($key);
 
         if (strpos($key, '.') && !preg_match('/[,\'\"\(\)\[\s]/', $key)) {
             list($table, $key) = explode('.', $key, 2);
-
-            $alias = $query->getOptions('alias');
-
-            if ('__TABLE__' == $table) {
-                $table = $query->getOptions('table');
-                $table = is_array($table) ? array_shift($table) : $table;
-            }
-
+            $alias             = $query->getOptions('alias');
             if (isset($alias[$table])) {
                 $table = $alias[$table];
+            } elseif ('__TABLE__' == $table) {
+                $table = $query->getTable();
             }
         }
 
-        if ($strict && !preg_match('/^[\w\.\*]+$/', $key)) {
-            throw new Exception('not support data:' . $key);
-        }
-
-        if ('*' != $key && !preg_match('/[,\'\"\*\(\)\[.\s]/', $key)) {
+        if (!is_numeric($key) && !preg_match('/[,\'\"\*\(\)\[.\s]/', $key)) {
             $key = '[' . $key . ']';
         }
 
@@ -128,8 +105,8 @@ class Sqlsrv extends Builder
     /**
      * limit
      * @access protected
-     * @param  Query     $query        查询对象
-     * @param  mixed     $limit
+     * @param Query     $query        查询对象
+     * @param mixed     $limit
      * @return string
      */
     protected function parseLimit(Query $query, $limit)

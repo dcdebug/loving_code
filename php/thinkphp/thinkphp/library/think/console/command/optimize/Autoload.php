@@ -17,6 +17,7 @@ use think\Container;
 
 class Autoload extends Command
 {
+
     protected function configure()
     {
         $this->setName('optimize:autoload')
@@ -38,8 +39,8 @@ EOF;
         $app              = Container::get('app');
         $namespacesToScan = [
             $app->getNamespace() . '\\' => realpath(rtrim($app->getAppPath())),
-            'think\\'                   => $app->getThinkPath() . 'library/think',
-            'traits\\'                  => $app->getThinkPath() . 'library/traits',
+            'think\\'                   => $app->getAppPath() . 'library/think',
+            'traits\\'                  => $app->getAppPath() . 'library/traits',
             ''                          => realpath(rtrim($app->getRootPath() . 'extend')),
         ];
 
