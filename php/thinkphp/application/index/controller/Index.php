@@ -3,6 +3,9 @@ namespace app\index\controller;
 
 //引入common类库
 use app\common\lib\ali\Sms;
+use app\common\lib\Util;
+use app\common\lib\Redis;
+
 class Index
 {
     public function index()
@@ -20,11 +23,48 @@ class Index
     }
 
     function sms(){
-        return 'sms';
+        //$telephoneNum =request()->get("phone_num",0,'intval');
+        //上述是有bug,永远会记录第一次你输入的手机号码
+        //当初的解决方案是修改那个path以及pathinfo
+        //我们还可以将thinkphp的一些基础文件在request的回调函数中进行加载，如果用这种情况的话与php-fpm很类似，相对于以前有那么一点损耗
+        //但是不会特别大，可以自行进行评估
+
+
+        $telephoneNum =$_GET["phone_num"];
+
+        if(empty($telephoneNum)){
+            //status 0,1 message ，data
+            return Util::show(config('show.error'),'empty telephone');
+        }
+        //生成一个随机数
+        $telephone_code = rand(100000,999999);
+        $telephone_code = 444444;
+        //写入redis中，使用swoole 的swoole 的异步redis
+            $response= array();
+
             try{
-                //Sms::sendSms();
+                //$response=Sms::sendSms($telephoneNum,$telephone_code);
+                $response['code'] = "OK";
             }catch (\Exception $e){
-                echo $e->getMessage();
+                return Util::show(config('show.error'),'error:'.$e->getMessage());
+            }
+            if($response['code'] === 'OK'){
+                //写入redis中，使用swoole 的swoole 的异步redis
+                //此部分写入到redis中，异步处理，可以写成一个基础类库，类似Util
+                $redis = new \Swoole\Coroutine\Redis();
+                $redis->connect(config('redis.host'),config('redis.port'),config("redis.expire_time"));
+                //$redis->set("sms_".$telephoneNum,$telephone_code);
+
+                $redis->set(Redis::smsKey($telephoneNum),$telephone_code,config('redis.expire_time'));
+
+                //redis这一个部分可以抽取处理，成为一个功能类。
+                //分布式的时候，这种会出现错乱。
+                //异步redis ，但是已经被swoole弃用，不再考虑
+
+                return  Util::show(config('show.success'),"阿里云发送验证码成功");
+            }else{
+                return Util::show(config('show.error'),"阿里云验证码发送失败");
+
             }
     }
 }

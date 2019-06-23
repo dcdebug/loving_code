@@ -95,18 +95,22 @@
 		  $('#authCodeBtn').click(function (event) {
 
 			    var phone_num = $(" input[ name='phone_num' ] ").val()
-				url = "http://singwa.swoole.com:8811?s=index/login&phone_num="+phone_num;
-				$(this).html('已发送').attr('disabled', true);
+				url = "http://swoole.dev.com:88/index/index/sms?phone_num="+phone_num;
 				// $.post()
 				$.get(url, function (data) {
+					console.log(data);
 					// TODO: 将下面3行代码删除
-					if (data.status == 'ok') {
+					if (data.status == 0) {
 						alert('发送完成');
+						$(this).html('已发送').attr('disabled', true);
+					}else{
+						alert("empty phone");
 					}
+
 					// if (result.status != 'ok') {
 					// 	alert('网络错误');
 					// }
-				});
+				},'json');
 			});
 
 			// 提交表单
@@ -114,8 +118,9 @@
 				event.preventDefault();
 				var formData = $('form').serialize();
 				// TODO: 请求后台接口跳转界面，前端跳转或者后台跳
-				$.get("https://www.easy-mock.com/mock/5ab1188bddac7967e4398146/example/query?"+formData, function (data) {
-					console.log("https://www.easy-mock.com/mock/5ab1188bddac7967e4398146/example/query?" + formData);
+				$.get("http://swoole.dev.com:88/index/login/index?"+formData, function (data) {
+				console.log(data);
+
 					// location.href='index.html';
 				});
 			});

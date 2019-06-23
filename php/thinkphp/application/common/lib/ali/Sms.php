@@ -31,6 +31,7 @@ Config::load();
 class Sms
 {
 
+    static $acsClient = null;
     /**
      * 取得AcsClient
      *

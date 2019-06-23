@@ -131,7 +131,6 @@ class Container
         } else {
             if (isset($this->bind[$abstract])) {
                 $concrete = $this->bind[$abstract];
-
                 if ($concrete instanceof \Closure) {
                     $object = $this->invokeFunction($concrete, $vars);
                 } else {
@@ -145,7 +144,6 @@ class Container
                 $this->instances[$abstract] = $object;
             }
         }
-
         return $object;
     }
 
