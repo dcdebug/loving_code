@@ -64,7 +64,7 @@ $http_think->on("request",function($request,$response) use ($http_think){
             ->send();
 
     }catch (\Exception $e){
-        var_dump($e);
+            echo $e->getMessage().PHP_EOL;
     }
     $response_thinkphp_res = ob_get_contents();
     ob_end_clean();

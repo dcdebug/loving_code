@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -11,35 +11,53 @@
 
 namespace think\response;
 
-use think\Container;
 use think\Response;
 
 class View extends Response
 {
     // 输出参数
-    protected $options     = [];
-    protected $vars        = [];
-    protected $replace     = [];
+    protected $options = [];
+    protected $vars    = [];
+    protected $config  = [];
+    protected $filter;
     protected $contentType = 'text/html';
+
+    /**
+     * 是否内容渲染
+     * @var bool
+     */
+    protected $isContent = false;
 
     /**
      * 处理数据
      * @access protected
-     * @param mixed $data 要处理的数据
+     * @param  mixed $data 要处理的数据
      * @return mixed
      */
     protected function output($data)
     {
         // 渲染模板输出
-        return Container::get('view')
-            ->init(Container::get('app')->config('template'), Container::get('app')->config('view_replace_str'))
-            ->fetch($data, $this->vars, $this->replace);
+        return $this->app['view']
+            ->filter($this->filter)
+            ->fetch($data, $this->vars, $this->config, $this->isContent);
+    }
+
+    /**
+     * 设置是否为内容渲染
+     * @access public
+     * @param  bool $content
+     * @return $this
+     */
+    public function isContent(bool $content = true)
+    {
+        $this->isContent = $content;
+        return $this;
     }
 
     /**
      * 获取视图变量
      * @access public
-     * @param string $name 模板变量
+     * @param  string $name 模板变量
      * @return mixed
      */
     public function getVars($name = null)
@@ -54,15 +72,14 @@ class View extends Response
     /**
      * 模板变量赋值
      * @access public
-     * @param mixed $name  变量名
-     * @param mixed $value 变量值
+     * @param  mixed $name  变量名
+     * @param  mixed $value 变量值
      * @return $this
      */
     public function assign($name, $value = '')
     {
         if (is_array($name)) {
             $this->vars = array_merge($this->vars, $name);
-            return $this;
         } else {
             $this->vars[$name] = $value;
         }
@@ -70,35 +87,33 @@ class View extends Response
         return $this;
     }
 
+    public function config($config)
+    {
+        $this->config = $config;
+        return $this;
+    }
+
+    /**
+     * 视图内容过滤
+     * @access public
+     * @param callable $filter
+     * @return $this
+     */
+    public function filter($filter)
+    {
+        $this->filter = $filter;
+        return $this;
+    }
+
     /**
      * 检查模板是否存在
      * @access private
-     * @param string|array  $name 参数名
+     * @param  string|array  $name 参数名
      * @return bool
      */
     public function exists($name)
     {
-        return Container::get('view')
-            ->init(Container::get('app')->config('template'))
-            ->exists($name);
-    }
-
-    /**
-     * 视图内容替换
-     * @access public
-     * @param string|array $content 被替换内容（支持批量替换）
-     * @param string  $replace    替换内容
-     * @return $this
-     */
-    public function replace($content, $replace = '')
-    {
-        if (is_array($content)) {
-            $this->replace = array_merge($this->replace, $content);
-        } else {
-            $this->replace[$content] = $replace;
-        }
-
-        return $this;
+        return $this->app['view']->exists($name);
     }
 
 }

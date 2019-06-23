@@ -1,28 +1,24 @@
 {
-    "name": "topthink/think",
-    "description": "the new thinkphp framework",
-    "type": "project",
-    "keywords": [
-        "framework",
-        "thinkphp",
-        "ORM"
-    ],
-    "homepage": "http://thinkphp.cn/",
+    "name": "aliyuncs/aliyun-dysms-php-sdk",
+    "description": "Aliyun SMS SDK for PHP",
+    "keywords": [ "aliyun", "SMS", "sdk" ],
+    "type": "library",
     "license": "Apache-2.0",
+    "homepage": "https://www.aliyun.com/product/sms",
     "authors": [
         {
-            "name": "liu21st",
-            "email": "liu21st@gmail.com"
+            "name": "Aliyuncs",
+            "homepage": "https://www.aliyun.com"
         }
     ],
     "require": {
-        "php": ">=5.6.0",
-        "topthink/framework": "~5.1.0@dev"
+        "php": ">=5.5.0"
     },
-    "extra": {
-        "think-path": "thinkphp"
-    },
-    "config": {
-        "preferred-install": "dist"
+    "require-dev": {},
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Aliyun\\": "lib/"
+        }
     }
 }
