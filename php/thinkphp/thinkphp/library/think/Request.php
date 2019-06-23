@@ -403,10 +403,15 @@ class Request
                 // 判断URL里面是否有兼容模式参数
                 $_SERVER['PATH_INFO'] = $_GET[$this->config->get('var_pathinfo')];
                 unset($_GET[$this->config->get('var_pathinfo')]);
-            } elseif ($this->isCli()) {
+            } /*elseif ($this->isCli()) {
                 // CLI模式下 index.php module/controller/action/params/...
+                echo "here";
+
                 $_SERVER['PATH_INFO'] = isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : '';
-            }
+                echo "<pre>";
+                print_r($_SERVER);
+
+            }*/
 
             // 分析PATHINFO信息
             if (!isset($_SERVER['PATH_INFO'])) {
