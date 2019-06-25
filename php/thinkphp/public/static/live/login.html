@@ -98,10 +98,8 @@
 				url = "http://swoole.dev.com:88/index/index/sms?phone_num="+phone_num;
 				// $.post()
 				$.get(url, function (data) {
-					console.log(data);
 					// TODO: 将下面3行代码删除
 					if (data.status == 0) {
-						alert('发送完成');
 						$(this).html('已发送').attr('disabled', true);
 					}else{
 						alert("empty phone");
@@ -120,9 +118,15 @@
 				// TODO: 请求后台接口跳转界面，前端跳转或者后台跳
 				$.get("http://swoole.dev.com:88/index/login/index?"+formData, function (data) {
 				console.log(data);
-
+				console.log(data.status);
+				if(data.status == 0){
+				    //登录成功
+					location.href ='http://swoole.dev.com:88/index/login/uindex';
+				}else{
+				    alert("登录失败");
+				}
 					// location.href='index.html';
-				});
+				},'json');
 			});
 
 			// 返回上一页

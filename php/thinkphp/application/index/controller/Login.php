@@ -45,4 +45,13 @@ class Login{
             //需要安装redis扩展
 
         }
+
+    /**
+     * 用户登录后的首页
+     */
+        public  function uindex(){
+
+            //
+            echo "登录成功";
+        }
 }
