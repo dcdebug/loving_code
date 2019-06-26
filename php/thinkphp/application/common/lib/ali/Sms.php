@@ -15,8 +15,7 @@ use Aliyun\Core\Config;
 use Aliyun\Core\Profile\DefaultProfile;
 use Aliyun\Core\DefaultAcsClient;
 use Aliyun\Api\Sms\Request\V20170525\SendSmsRequest;
-use Aliyun\Api\Sms\Request\V20170525\SendBatchSmsRequest;
-use Aliyun\Api\Sms\Request\V20170525\QuerySendDetailsRequest;
+
 
 // 加载区域结点配置
 Config::load();
@@ -76,6 +75,7 @@ class Sms
      */
     public static function sendSms($telephoneNum,$code)
     {
+        return ;
 
         // 初始化SendSmsRequest实例用于设置发送短信的参数
         $request = new SendSmsRequest();

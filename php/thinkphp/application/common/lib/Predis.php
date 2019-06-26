@@ -5,7 +5,7 @@
 namespace  app\common\lib;
 class Predis{
 
-    //单例模式.
+    //单例模式.避免了多次连接redis带来的消耗
 
     private  static $_instance= null;
 
