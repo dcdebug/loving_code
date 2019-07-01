@@ -15,13 +15,13 @@ class Http
         $this->http = new swoole_http_server(self::HOST,self::PORT);
         $this->http->set([
             'enable_static_handler'=>true,
-            'document_root'=>__DIR__."/../public/",
+            'document_root'=>"/home/darrykinger/loving_code/php/thinkphp/public/",
             'worker_num'=>6,
             'task_worker_num'=>6
         ]);
 
         //注册一些http事件
-        $this->http->on('WorkerStart',[$this,"onWorkerStart"]);
+        $this->http->on('workerstart',[$this,"onWorkerStart"]);
         $this->http->on('request',[$this,"onRequest"]);
         $this->http->on('task',[$this,"onTask"]);
         $this->http->on('finish',[$this,"onFinish"]);
