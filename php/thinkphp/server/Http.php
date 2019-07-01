@@ -17,7 +17,8 @@ class Http
             'enable_static_handler'=>true,
             'document_root'=>"/home/darrykinger/loving_code/php/thinkphp/public/",
             'worker_num'=>6,
-            'task_worker_num'=>6
+            'task_worker_num'=>5,
+
         ]);
 
         //注册一些http事件
