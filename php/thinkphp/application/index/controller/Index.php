@@ -43,22 +43,29 @@ class Index
         }
         //生成一个随机数
         $telephone_code = rand(100000,999999);
-        $telephone_code = 444444;
+        $telephone_code = 888888;
         //写入redis中，使用swoole 的swoole 的异步redis
             $response= array();
             $taskData =[
-                'phone_num'=>$telephoneNum,
-                'code'=>$telephone_code
+                //对于task列表的优化:
+                'method'=>'sendSms',
+                'data'=>[
+                    'phone_num'=>$telephoneNum,
+                    'code'=>$telephone_code
+                ]
+                /*'phone_num'=>$telephoneNum,
+                'code'=>$telephone_code*/
             ];
             $_POST['http_server']->task($taskData);
         //将下面的内容放到task中去
+        return  Util::show(config('show.success'),"阿里云发送验证码成功");
 
-/*        try{
-                //$response=Sms::sendSms($telephoneNum,$telephone_code);
+       try{
+                $response=Sms::sendSms($telephoneNum,$telephone_code);
                 $response['code'] = "OK";
             }catch (\Exception $e){
                 return Util::show(config('show.error'),'error:'.$e->getMessage());
-            }*/
+            }
             if($response['code'] === 'OK'){
                 //写入redis中，使用swoole 的swoole 的异步redis
                 //此部分写入到redis中，异步处理，可以写成一个基础类库，类似Util

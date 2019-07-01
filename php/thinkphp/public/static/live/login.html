@@ -99,15 +99,14 @@
 				// $.post()
 				$.get(url, function (data) {
 					// TODO: 将下面3行代码删除
+					console.log(data);
+					console.log(data.status);
 					if (data.status == 0) {
-						$(this).html('已发送').attr('disabled', true);
+					    alert("验证码发送成功");
+                        $('#authCodeBtn').html('已发送').attr('disabled', true);
 					}else{
 						alert("empty phone");
 					}
-
-					// if (result.status != 'ok') {
-					// 	alert('网络错误');
-					// }
 				},'json');
 			});
 

@@ -97,12 +97,51 @@ class Http
 
 
     public  function onTask($server,$taskID,$workerid,$data){
+
+        //return 之后的是没有做任务分发之前的,优化之后
+        //任务分发
+        $this->__common_thinkphp();
+
+
+        if(isset($data['method'])&&$data['method']){
+
+            $task_method = $data['method'];
+
+            $task_object  = new app\common\task\Task();
+            $task_object->$task_method($data['data']);
+
+        }else{
+
+            echo "new the parameter :method".PHP_EOL;
+
+        }
+
+
+
+        return  true;
         //将workerstart中引入start.php文件
                 //引入Sms
             $this->__common_thinkphp();
             $sms = new app\common\lib\ali\Sms();
                 try{
                 $response= $sms::sendSms($data['phone_num'],$data['code']);
+                if($response['code'] == "OK"){
+                    //
+
+                   app\common\lib\Predis::getInstance()->set(app\common\lib\Redis::smsKey($data['phone_num']),$data['code'],config('redis.expire_time'));
+
+            /*        $redis = new \Swoole\Coroutine\Redis();
+                    $redis->connect(config('redis.host'),config('redis.port'),config("redis.expire_time"));
+                    //$redis->set("sms_".$telephoneNum,$telephone_code);
+
+                    $redis->set(Redis::smsKey($data['phone_num']),$data['code'],config('redis.expire_time'));*/
+
+
+                }else{
+                    //todo
+                    echo "阿里云发送验证码失败".PHP_EOL;
+
+                }
                 //$response['code'] = "OK";
             }catch (\Exception $e){
                     echo $e->getMessage();

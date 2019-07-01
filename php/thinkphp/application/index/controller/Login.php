@@ -19,7 +19,7 @@ class Login{
             }
             try{
                // var_dump(unserialize(0)); //unserialize(): Error at offset 0 of 1 bytes
-                $redisCode = unserialize(Predis::getInstance()->get(Redis::smsKey($telephone)));
+                $redisCode = Predis::getInstance()->get(Redis::smsKey($telephone));
                // var_dump($redisCode);
                 //var_dump(unserialize($redisCode));
             }catch(\Exception $e){
