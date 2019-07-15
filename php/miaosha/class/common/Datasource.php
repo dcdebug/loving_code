@@ -90,6 +90,7 @@ class RedisHelper {
                 self::$connect_error = 0;
             } catch (Exception $e) {
                 if (self::$connect_error < 2) {
+                    //失败的时候，尝试链接服务器两次
                     self::$connect_error += 1;
                     return RedisHelper::instance($config_name, $redis_config, $server_region);
                 } else {
