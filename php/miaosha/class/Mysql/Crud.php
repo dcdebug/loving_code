@@ -1,6 +1,7 @@
 <?php 
 /**
-* Easy Crud  -  This class kinda works like ORM. Just created for fun :) 
+* Easy Crud  -  This class kinda works like ORM. Just created for fun :)
+ * Database 's curd :数据库的增删改查
 * @modify 王毅
 * @author		Author: Vivek Wicky Aswal. (https://twitter.com/#!/VivekWickyAswal)
 * @version      0.1a
