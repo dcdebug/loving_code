@@ -70,7 +70,7 @@ $pdo_db->close();*/
 //mysqlid
 //直接读取注册树中的独享
 
-$global_factory_objects = new \Common\Factory();
+/*$global_factory_objects = new \Common\Factory();
 
 $db = \Common\Register::get("mysqli_db");
 $result = $db->query("show databases;")->get_array();
@@ -79,7 +79,7 @@ var_dump($result);
 
 die;
 var_dump($db);
-die;
+die;*/
 
 //Common\Objects::test();
 
@@ -91,3 +91,40 @@ die;
 //使用的时候,只需要在使用Mysqli,mysql,pdo的时候new 对应的类就可以了,本次的代码我进行了合并,
 //适配器模式对于不同的数据库链接都是采用同样的方法,也就是connect->query->close等等其他操作
 //而使用者不需要知道具体后台如何实现的
+class Page{
+
+
+    protected  $strategy;
+    function index(){
+
+        //没有实用策略模式,那么是这样实用
+ /*       if(isset($_GET['female'])){
+            new \Common\FemaleUserStrategy();
+        }else if(isset($_GET['male'])){
+            new \Common\MaleUserStrategy();
+        }else{
+            //.............
+        }*/
+        //使用策略模式的话,这样使用
+        //直接调用策略的相关方法
+        echo "ad".PHP_EOL;
+        $this->strategy->showAd();
+
+        echo "category".PHP_EOL;
+        $this->strategy->showCategory();
+    }
+    function setStrategy( \Common\UserStrategy $strategy){
+            $this->strategy = $strategy;
+    }
+}
+$page = new Page;
+
+if(isset($_GET['female'])){
+    $strategy = new \Common\FemaleUserStrategy();
+}else{
+    $strategy = new \Common\MaleUserStrategy();
+}
+
+//设置策略
+$page->setStrategy($strategy);
+$page->index();
