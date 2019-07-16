@@ -12,7 +12,7 @@ spl_autoload_register("\Common\Loader::autoload");
 
 
 
-$db = new Common\Database();
+/*$db = new Common\Database();*/
 //传统的方式
 /*$db->where("id =3 ");
 $db->where("name =3 ");
@@ -20,9 +20,9 @@ $db->order("id desc ");
 $db->limit(" 10 ");*/
 //链试方式
 //这是解决练市访问的关键
-$db->where("id = 3")->where("name = 3")->order("id desc")->limit(11);
+/*$db->where("id = 3")->where("name = 3")->order("id desc")->limit(11);
 
-$object = new Common\Objects();
+$object = new Common\Objects();*/
 
 //访问一个对象不存在的属性
 //$object->title = "成越";
@@ -38,17 +38,56 @@ $object = new Common\Objects();
 
 //Common\Objects::getFun("hello abc",array(1,3,34));
 //将一个对象以字符串的形式输出
-var_dump($object);
+/*var_dump($object);*/
 
-echo $object;
+/*echo $object;
 
-echo $object("test1222222222222222");
+echo $object("test1222222222222222");*/
+
+//database connect
+$host = "localhost";
+$user = "root";
+$password ="iServer123";
+
+$dbname = "upmngr";
+/*$db = new Common\Database\Mysql($host,$user,$password,$dbname);
+$result = $db->query("show databases;");
+var_dump($result);
 
 
+$db->close();*/
+
+/*$pdo_db = new Common\Database\Pdo($host,$user,$password,$dbname);
+var_dump($pdo_db);
+
+$result = $pdo_db->query("show databases;");
+
+var_dump($result);
+
+
+$pdo_db->close();*/
+
+//mysqlid
+//直接读取注册树中的独享
+
+$global_factory_objects = new \Common\Factory();
+
+$db = \Common\Register::get("mysqli_db");
+$result = $db->query("show databases;")->get_array();
+
+var_dump($result);
 
 die;
+var_dump($db);
+die;
 
-Common\Objects::test();
+//Common\Objects::test();
 
 
-App\Controller\Home\Index::test();
+//App\Controller\Home\Index::test();
+
+
+//关于适配器模式,
+//使用的时候,只需要在使用Mysqli,mysql,pdo的时候new 对应的类就可以了,本次的代码我进行了合并,
+//适配器模式对于不同的数据库链接都是采用同样的方法,也就是connect->query->close等等其他操作
+//而使用者不需要知道具体后台如何实现的
