@@ -12,6 +12,11 @@ spl_autoload_register("\Common\Loader::autoload");
 
 
 
+//调用user模型
+$user = new \App\Model\User();
+
+
+die;
 /*$db = new Common\Database();*/
 //传统的方式
 /*$db->where("id =3 ");

@@ -11,7 +11,6 @@ class Pdo implements  IDatabase{
 
     function connect($host,$user,$password,$dbname){
         $dsn = "mysql:dbname={$dbname};host={$host};";
-
         try{
             //dsn
             $this->conn = new \PDO($dsn,$user,$password,
