@@ -4,6 +4,7 @@
  * DEBUG_LEVEL=0的时候不会在后端运行，
  * DEBUG_LEVEL=1的时候会记录错误、警告信息以及资源调用的耗时汇总统计，
  * DEBUG_LEVEL=2的时候，会记录全部的数据
+ * PHP 框架的debug功能
  * 如果在参数列表中出现 __DEBUG_LEVEL ，则会强制覆盖 DEBUG_LEVEL 的值
  * 功能列表如下：
  * 1 time 性能探针，计算运行的步骤以及每一步的执行效率
