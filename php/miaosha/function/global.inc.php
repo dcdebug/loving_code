@@ -44,6 +44,7 @@ class SYSCore {
 	}
 				
     public static function autoload($class_name) {
+
         if (strpos($class_name, 'common') === 0
             || strpos($class_name, 'model') === 0
             || strpos($class_name, 'Mysql') === 0
@@ -59,6 +60,7 @@ class SYSCore {
         $class_path = CUSTOM_CLASS_PATH . DIRECTORY_SEPARATOR . $class_name.'.php';
         $class_path = str_replace('//', '/', $class_path);
         if(file_exists($class_path)) {
+
             return include_once($class_path);
         } else {
             echo "file not exists class_path=$class_path\n<br/>";
@@ -69,7 +71,6 @@ class SYSCore {
 }
 
 SYSCore::registerAutoload();
-
 /*---Debug Begin---*/
 if((defined('_IS_DEBUG') && _IS_DEBUG) || (isset($_REQUEST['__debug']) && strpos($_REQUEST['__debug'], _DEBUG_PASS) !== false))
 {
