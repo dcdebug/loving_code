@@ -3,6 +3,9 @@
 //PSR-0 规范 :入口文件
 //定义网站的根目录
 
+
+ini_set("display_errors",E_ALL);
+
 define("BASEDIR", __DIR__);
 
 //引入自动加载文件
@@ -12,10 +15,119 @@ spl_autoload_register("\Common\Loader::autoload");
 
 
 
+/*class Event{
+    function trigger(){
+
+        echo "event";//事件发生时的后续处理逻辑
+        echo"<br/>"; //
+    }
+}*/
+class Event extends  Common\EventGenerator{
+
+    public function trigger(){
+        //对观察者通知;
+        echo "event trigger"."<br/>";
+        $this->notify();
+        //当前没有观察者
+
+    }
+}
+//增加观察者
+class Observer1 implements  Common\Observer{
+
+      function update($event_info = null){
+        echo "逻辑 1"."<br/>";
+
+    }
+}
+
+class Observer2 implements  Common\Observer{
+
+    function update($event_info = null){
+        echo "逻辑 2"."<br/>";
+
+    }
+}
+$event = new Event();
+//将观察者加入到监听列表中
+$event->addObject(new Observer1());
+$event->addObject(new Observer1());
+$event->addObject(new Observer1());
+$event->addObject(new Observer1());
+$event->addObject(new Observer1());
+$event->addObject(new Observer1());
+$event->addObject(new Observer2());
+$event ->trigger();
+
+die;
+//获取数据库的信息
+//$mysql_version_info = (new Common\Database\Mysqli())->mysqli_version();
+/*$mysql_version_info = Common\Database\Mysqli::getInstance();
+$mysql_version_info = $mysql_version_info->mysqli_version();
+var_dump($mysql_version_info);
+die;*/
+
+//委托
+
+/*
+class Event{
+
+
+}
+
+die;*/
+
+
+//使用对象模式完成更复杂的对象映射
+
+class Page{
+
+
+    public  function index(){
+        //$user = new App\Model\User(1);
+        $user = Common\Factory::getUser(1);
+        $user->name = "new".time();
+        $this->test();
+    }
+
+    public  function test(){
+        //$user = new App\Model\User(1);
+        $user = Common\Factory::getUser(1);
+        $user->mobile = '17607670500';
+        $user->regtime = time();
+        //$user = new App\Model\User(1);
+
+    }
+    //上面的代码实例化了两个代码,我们完全可以使用工厂模式将这个类的实例给抽离出来,防止参数变化的时候
+    //会出现代码多个地方的修改
+    //修改为工厂模式以后,发现还是有问题,就是new了两次对象,这个时候我们考虑在工厂方法里面采用注册器模式,注意,采用test函数传递$user对象,仍旧会有传递成本
+    //如下:
+    //参考工厂模类里面的getUser方法
+
+}
+
+$page = new Page();
+
+$page ->index();
+
+die;
+
+
+
+
+
+
+
+//===使用对象模式完成更复杂的对象映射
+
 //调用user模型
-$user = new \App\Model\User();
+$user = new \App\Model\User(1);
 
-
+//修改对象的值
+$user->name = 'Deary';
+$user->mobile = 17095053557;
+$user->regtime = time();
+print_r($user);
 die;
 /*$db = new Common\Database();*/
 //传统的方式
