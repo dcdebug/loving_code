@@ -13,6 +13,74 @@ include BASEDIR . "/Common/Loader.php";
 //自动加载函数注册
 spl_autoload_register("\Common\Loader::autoload");
 
+//原型模式
+/*$canvas1 =new Common\Canvas();
+
+$canvas1 ->init();
+
+
+$canvas1 ->rect(3,6,4,12);
+$canvas1 ->draw();
+
+
+echo "=============================<br/>";
+
+
+$canvas2 =new Common\Canvas();
+
+$canvas2 ->init();
+
+
+$canvas2 ->rect(3,6,4,12);
+
+$canvas2 ->draw();*/
+
+//由于每一次创建对象都会进行for循环,创建一个对象对资源的小号过大
+//采用原型模式的处理如下:
+echo "原型模式处理<br/>";
+
+$porotype =new Common\Canvas();
+
+$porotype ->init();
+
+$canvas1 = clone $porotype;
+$canvas1 ->rect(3,6,4,12);
+$canvas1 ->draw();
+
+
+echo "=============================<br/>";
+
+
+$canvas2 = clone $porotype;
+
+$canvas2 ->init();
+
+
+$canvas2 ->rect(3,6,4,12);
+
+$canvas2 ->draw();
+
+die;
+$canvas1->draw();
+
+
+die;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*class Event{
