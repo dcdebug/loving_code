@@ -1,7 +1,7 @@
 <?php
 namespace  Common;
 
-
+use Common\Database;
 class  Factory{
 
 
@@ -16,8 +16,12 @@ class  Factory{
     static function createDatabase(){
         return new Database(); //工厂模式,工厂方法中new
     }
+    static function getDatabase(){
+        return Database\Mysqli::getInstance();
+    }
+
     //注册模式,
-    public  function __construct()
+/*    public  function __construct()
     {
         $db = Database\Mysqli::getInstance();
 
@@ -29,9 +33,7 @@ class  Factory{
         //使用注册模式将独享
         $the_object_of_you_need = Register::get("db1");
 
-
-
-    }
+    }*/
 
 
 }

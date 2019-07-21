@@ -12,6 +12,16 @@ define("BASEDIR", __DIR__);
 include BASEDIR . "/Common/Loader.php";
 //自动加载函数注册
 spl_autoload_register("\Common\Loader::autoload");
+
+echo "迭代器模式<br/>";
+$users = new \Common\AllUser();
+
+foreach( $users as $user){
+    echo "<pre>";
+    var_dump($user);
+
+}
+die;
 //装饰器模式
 //场景需求:在不改变draw类的情况,修改画布的颜色或者字体
 echo "装饰器模式<br/>";

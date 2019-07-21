@@ -69,6 +69,8 @@ class Mysqli implements IDatabase{
      * @return bool|\mysqli_result
      */
     public  function query($sql){
+        //mysqli_query查询方法返回的是一个mysqli_result  对象
+
          $this->origin_result =mysqli_query($this->conn,$sql);
          return $this; //使用链式查询
     }
@@ -80,7 +82,39 @@ class Mysqli implements IDatabase{
      */
     public function get_array(){
         if($this->origin_result){
-            while($row = $this->origin_result->fetch_object()){
+            if($this->origin_result instanceof  \mysqli_result){
+                echo "mysqli_result <br/>";
+            }
+
+        /*    $result = $this->origin_result->fetch_all();
+
+            echo "<pre>";
+            var_dump($result);
+            die;*/
+
+            //$result = $this->origin_result->fetch_array(MYSQLI_BOTH);
+            //$result = $this->origin_result->fetch_array(MYSQLI_NUM);//没有字段名称了
+     /*       while($row= $this->origin_result->fetch_array(MYSQLI_NUM)){
+                echo "<pre>";
+                var_dump($row);
+            }*/
+
+            //MYSQLI_ASSOC:id,name...等别的字段都会显示, MYSQLI_NUM:字段名称去掉,用0,1,2...等替换, or MYSQLI_BOTH:前两者都有
+
+
+    /*        while($row= $this->origin_result->fetch_array(MYSQLI_BOTH)){
+                echo "<pre>";
+                var_dump($row);
+            }
+            die;
+            echo "<pre>";
+            var_dump($result);
+            die;*/
+            while($row = $this->origin_result->fetch_array(MYSQLI_BOTH)){
+
+               /* echo "<pre>";
+
+                var_dump($row);*/
                 $result_arr[] = $row;
             }
             $this->origin_result->close();
