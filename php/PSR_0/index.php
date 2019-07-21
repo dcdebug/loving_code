@@ -12,7 +12,30 @@ define("BASEDIR", __DIR__);
 include BASEDIR . "/Common/Loader.php";
 //自动加载函数注册
 spl_autoload_register("\Common\Loader::autoload");
+//代理模式
 
+//如果mysql实现读写分离,可以采用:
+/*$db = \Common\Factory::getDatabase("slave");
+$result = $db->query('select sql');
+
+//如果是写
+$db = \Common\Factory::getDatabase("master");
+
+$result = $db->query("update sql");*/
+//如果采用代理模式
+//创建IUserProxy 接口
+//proxy 实现IUserProxy接口
+
+$proxy = new Proxy();
+
+//读
+$proxy ->getUsername(1);
+
+//写
+$proxy ->setUsername(1,'aaa');
+
+
+die;
 echo "迭代器模式<br/>";
 $users = new \Common\AllUser();
 
