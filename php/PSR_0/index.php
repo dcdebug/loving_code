@@ -13,6 +13,11 @@ include BASEDIR . "/Common/Loader.php";
 //自动加载函数注册
 spl_autoload_register("\Common\Loader::autoload");
 
+echo "数据库的自动化配置<br/>";
+
+$db = \Common\Factory::getDatabase();
+
+die;
 
 echo "自动加载配置<br/>";
 

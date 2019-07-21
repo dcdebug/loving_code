@@ -40,7 +40,8 @@ class Mysqli implements IDatabase{
             $this->connect("localhost","root","iServer123","upmngr");
     }
 
-    static  function getInstance(){
+    static  function getInstance($id = "master"){
+
         if(self::$instance){
             return self::$instance;
         }

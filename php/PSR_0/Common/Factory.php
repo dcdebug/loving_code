@@ -16,8 +16,8 @@ class  Factory{
     static function createDatabase(){
         return new Database(); //工厂模式,工厂方法中new
     }
-    static function getDatabase(){
-        return Database\Mysqli::getInstance();
+    static function getDatabase($id="master"){
+        return Database\Mysqli::getInstance($id);
     }
 
     //注册模式,
