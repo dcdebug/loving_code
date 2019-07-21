@@ -1,11 +1,29 @@
 <?php
 namespace Common;
 
-class Canvas
+class Canvas implements DrawDecorator
 {
     public $data;
-    protected $decorators = array();
 
+    //保存装饰器
+    protected  $decorator_arr = [];
+    public  function addDecorator(DrawDecorator $decorator){
+        $this->decorator_arr[]= $decorator;
+    }
+    //实现接口的方法
+    public  function beforeDraw(){
+
+        //执行装饰器中的方法,只要继承了装饰器接口,都要实现这个接口,aterDraw同
+        foreach($this->decorator_arr as $decorator){
+            $decorator->beforeDraw();
+        }
+    }
+    public  function afterDraw(){
+        foreach($this->decorator_arr as $decorator){
+            $decorator->afterDraw();
+        }
+
+    }
     //Decorator
     function init($width = 20, $height = 10)
     {
@@ -20,30 +38,9 @@ class Canvas
         $this->data = $data;
     }
 
-    function addDecorator(DrawDecorator $decorator)
-    {
-        $this->decorators[] = $decorator;
-    }
-
-    function beforeDraw()
-    {
-        foreach($this->decorators as $decorator)
-        {
-            $decorator->beforeDraw();
-        }
-    }
-
-    function afterDraw()
-    {
-        $decorators = array_reverse($this->decorators);
-        foreach($decorators as $decorator)
-        {
-            $decorator->afterDraw();
-        }
-    }
-
     function draw()
     {
+        //此处要调用当前的before装饰器
         $this->beforeDraw();
         foreach($this->data as $line)
         {

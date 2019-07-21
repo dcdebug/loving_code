@@ -12,7 +12,34 @@ define("BASEDIR", __DIR__);
 include BASEDIR . "/Common/Loader.php";
 //自动加载函数注册
 spl_autoload_register("\Common\Loader::autoload");
+//装饰器模式
+//场景需求:在不改变draw类的情况,修改画布的颜色或者字体
+echo "装饰器模式<br/>";
+class Canvas2 extends  Common\Canvas{
+    public  function draw(){
+        echo "<div style='color:red'>";
+        parent::draw();
+        echo "</div>";
+    }
+}
+$canvas2 = new Canvas2();
+$canvas2->init();
+$canvas2->rect(3,6,4,12);
+$canvas2->draw();
+//采用装饰者模式
+echo "采用装饰器模式<br/>";
+$canvas2 = new Common\Canvas();
 
+//增加装饰
+$canvas2 ->addDecorator(new \Common\ColorDecorator('green'));
+//控制文字大小的
+$canvas2->addDecorator(new \Common\SizeDecorator(25));
+$canvas2 ->init();
+$canvas2->rect(3,6,4,12);
+$canvas2 ->draw();
+
+
+die;
 //原型模式
 /*$canvas1 =new Common\Canvas();
 
