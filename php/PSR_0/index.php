@@ -12,6 +12,22 @@ define("BASEDIR", __DIR__);
 include BASEDIR . "/Common/Loader.php";
 //自动加载函数注册
 spl_autoload_register("\Common\Loader::autoload");
+
+
+echo "自动加载配置<br/>";
+
+
+$config = new Common\Config(__DIR__."/Config");
+
+//注意,这个config是不写key是不加载的
+//写了key会自动加载对应的key
+echo "<pre>";
+var_dump($config['database']);
+echo "<pre>";
+
+var_dump($config['Controller']);
+
+die;
 //代理模式
 
 //如果mysql实现读写分离,可以采用:
