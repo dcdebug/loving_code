@@ -1,4 +1,6 @@
 <?php
+echo __DIR__.PHP_EOL;
+die;
 /**
  * Created by PhpStorm.
  * User: baidu

@@ -1,0 +1,13 @@
+php_extensions.txt
+php的扩展可以分为四类：
+一，核心扩展库，内核的一部分，
+        编译的时候不能被省略掉，array系列，date系列，string系列，反射等等
+二，绑定的扩展库，iconv，ftp，gd，json等等，都是属于绑定的扩展类
+三，外部扩展库： curl，dom，mysqli等，都是属于绑定的外部扩展库，已经在php源码中，需要在编译的时候指定才能使用，并且可能会需要额外的扩展库
+4⃣，pecl扩展库：常见的memcached，yaf，xhprof等等，这些扩展是来自pecl，也有可能需要额外的扩展库
+
+另外还可以分成了两类：
+    1⃣️，php级别的扩展，比如在php_module_start加载扩展时，在配置文件中extensions=*.so ->结构体：zend_module_entry
+    2⃣️，zend引擎的扩展 Zend_extensions-*.so  ->zend_extension 结构体
+    比较特殊的扩展 xdebug ,都实现了上面的1，2扩展
+    
