@@ -16,7 +16,8 @@ struct Books{
     int book_id;
 }; //Books 结构体定义
 
-//函数声明
+//函数声明,参数是一个指向struct Books类型的指针
+
 void printBook(struct Books *book);
 
 
@@ -38,7 +39,8 @@ struct Books Book2;
    strcpy( Book2.subject, "Telecom Billing Tutorial");
    Book2.book_id = 6495700;
 
-   //传递地址：
+   //传递地址：传递实参是地址
+   
    printBook(&Book1);
    printBook(&Book2);
     printf("定义一个指向struct 类型的指针\n");
