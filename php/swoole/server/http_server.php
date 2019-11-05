@@ -1,6 +1,5 @@
 <?php
-echo __DIR__.PHP_EOL;
-die;
+
 /**
  * Created by PhpStorm.
  * User: baidu
@@ -24,11 +23,19 @@ $http->on('request', function($request, $response) {
         'header:' => $request->header,
     ];
 
-    swoole_async_writefile(__DIR__."/access.log", json_encode($content).PHP_EOL, function($filename){
+    /*swoole_async_writefile(__DIR__."/access.log", json_encode($content).PHP_EOL, function($filename){
         // todo
-    }, FILE_APPEND);
+    }, FILE_APPEND);*/
     $response->cookie("singwa", "xsssss", time() + 1800);
     $response->end("sss". json_encode($request->get));
 });
 
 $http->start();
+
+class Swoole_http{
+
+
+    public  function __construct()
+    {
+    }
+}
