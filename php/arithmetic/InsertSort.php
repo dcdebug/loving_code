@@ -42,4 +42,8 @@ class InsertSort {
 $arr = [83, 2, 44, 21, 2, 23, 3, 322, 1111,1.5,1.0,1.001];
 $insertSort = new InsertSort($arr);
 $insertSort->insertSort();
+//算法参考的文档：
+
+///https://zh.wikipedia.org/zh-hans/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F
+///
 
