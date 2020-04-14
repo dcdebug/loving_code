@@ -1,0 +1,11 @@
+{
+    "name": "darry/composer",
+    "description": "pwd",
+    "authors": [
+        {
+            "name": "d.c",
+            "email": "chengyue.wang@iservernetwork.com"
+        }
+    ],
+    "require": {}
+}

@@ -1,0 +1,25 @@
+<?php
+
+namespace  app\api\controller;
+
+/**
+ * @controller(prefix="test")
+ * Class testController
+ * @package app\api\controller
+ */
+class testController{
+    /**
+     * @RequestMapping(route="index")
+     */
+    public function index(){
+        return strtolower(__FUNCTION__);
+    }
+
+    /**
+     * @RequestMapping(route="test",method="get")
+     * @return string
+     */
+    public function test(){
+        return strtolower(__FUNCTION__);
+    }
+}
