@@ -7,6 +7,5 @@ go(function(){
     $redis->connect('127.0.0.1','6379');
     $redis->set("key",'aaaa');
     $value = $redis->get('key');
-
     var_dump($value);
 });

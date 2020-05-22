@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组合slot</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <h3>Vue插槽的介绍：</h3>
+    <p> slot是父组件与子组件的通讯方式，可以将父组件的内容显示在子组件中</p>
+    <p> 在子组件中，通过为多个slot进行命名，来接受父组件的不同内容的数据</p>
+    <p>运用多个slot</p>
+    <say-to pname="koma" test="koma test " >
+        <span slot="km">你的视频质量太差了</span>
+    </say-to>
+    <say-to pname="mike" >
+        <span slot="jh">你要努力，但是不要学习Koma</span>
+    </say-to>
+    <say-to pname="john" >
+        <span slot="mk">你最棒，教教他们两个</span>
+    </say-to>
+</div>
+<script type="text/javascript">
+    //定义一个组件
+    Vue.component('say-to',{
+        props:['pname','test'],
+        template:'<div>你好,<strong>{{pname}}  ---- {{test}}</strong>!<slot name="km"></slot><slot name="km"></slot><slot name="jh"></slot></div>'
+    });
+   var myapp = new Vue({
+       el:'#myapp',
+       data:{
+
+       }
+   })
+
+</script>
+</body>
+</html>

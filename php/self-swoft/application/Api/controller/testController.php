@@ -1,9 +1,9 @@
 <?php
 
-namespace  app\api\controller;
+namespace  App\Api\Controller;
 
 /**
- * @controller(prefix="test")
+ * @controller(prefix="/test")
  * Class testController
  * @package app\api\controller
  */
@@ -16,7 +16,7 @@ class testController{
     }
 
     /**
-     * @RequestMapping(route="test",method="get")
+     * @RequestMapping(route="test")
      * @return string
      */
     public function test(){

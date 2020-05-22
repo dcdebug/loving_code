@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Class 绑定</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <div v-bind:class="myClass">文本框1 v-bind 绑定对象</div>
+    <div :class="myClass">文本框1 Class绑定对象</div>
+    <div>
+        <button @click="ChangeActive">Channel - Active</button>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    var myapp = new Vue({
+        el: '#myapp',
+        data: {
+            myClass:{
+                active:true,
+                big:false,
+            }
+        },
+        methods: {
+            ChangeActive: function () {
+                /*if (this.isActive) {
+                    this.isActive = false;
+                } else {
+                    this.isActive = true;
+                }*/
+                //this.myClass.isActive=!this.myClass.isActive;
+                this.myClass.big = !this.myClass.big;
+            }
+        }
+    })
+</script>
+<style type="text/css">
+    .active {
+        color: red;
+    }
+    body{
+        font-size: 24px;
+    }
+    .big{
+        font-weight:bolder;
+        font-size:64px;
+    }
+</style>
+</html>

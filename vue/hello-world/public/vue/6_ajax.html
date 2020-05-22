@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Ajax库-axios</p>
+<p>为网页增加远程数据库存取的能力</p>
+<p>http库axios（浏览器or Node.js）</p>
+
+1. cd my-vue
+2. 安装: npm install --save --save-exact axios vue-axios
+3. 修改src/main.js :
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+Vue.use(VueAxios,axios)
+4.在component/Helloworld.vue 中的html部分，增加
+{{content}}
+5.在script内:
+export default {
+name: 'HelloWorld',
+data () {
+return {
+msg: 'Welcome to Your Vue.js App',
+content:''
+}
+},
+//mounted
+mounted(){
+this.axios.post("http://ota.iservernetwork.com/Customer/CustomerTvApi/getChannelAndVideosByTypeId").then(body=>{
+this.content = body.data;
+})
+}
+}
+
+
+
+
+</body>
+</html>

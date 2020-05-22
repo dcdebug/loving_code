@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>下拉框</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <p>.lazy  .number .trim 修饰用户输入的数据</p>
+    <p>用户输入内容时，不做绑定数据的更新处理，在控件的onchange事件中更新绑定的变量
+        比如光标离开输入框的时候，会触发onchange变量
+    </p>
+    <p>案例：用户注册</p>
+    <div>
+        <p>
+            <label for="username">用户名：</label>
+           <input type="text" id="username" v-model.lazy="username" @change="checkUsername">
+            <span v-if="checkUsernameOK" style="color:green;">可注册</span>
+        </p>
+        <p>
+            <label for="age">年龄：</label>
+            <input id="age" v-model.number="age" type="number">
+        </p>
+        <p>
+            <label for="content">意见：</label>
+            <input id="content" rows="8" cols="55" v-model.trim="content">
+
+        </p>
+        <p>输入的信息</p>
+        <p>用户名:{{username}}</p>
+        <p v-if="age==0">年龄:{{age}}</p>
+        <p>个人意见:{{content}}</p>
+    </div>
+
+
+</div>
+<script type="text/javascript">
+    var myapp = new Vue({
+        el: '#myapp',
+        data: {
+            username:"",
+            checkUsernameOK:false,
+            age:0,
+            content:"",
+
+        },
+        methods: {
+            checkUsername:function(){
+                if(this.username.length>0) this.checkUsernameOK = true;
+                else this.checkUsernameOK=false;
+            }
+        },
+    });
+</script>
+</body>
+</html>

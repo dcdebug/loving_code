@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <meta charset="UTF-8">
+  <title>Filter 过滤</title>
+</head>
+<body>
+<div id="myapp">
+  <p>{{message}}</p>
+  <p>{{message|toupper}}</p>
+  <p>{{message|tolower}}</p>
+  <hr/>
+  <p> 过滤器的定义: {{num}}{{num|topercentage}}</p>
+</div>
+
+<script type="text/javascript">
+  var myapp = new Vue({
+    el: "#myapp",
+    data: {
+      message: "hello vue.js ,filters",
+      num:0.03,
+    },
+    filters: {
+      toupper: function (value) {
+        if (!value) return '';
+        return value.toUpperCase();
+      },
+      topercentage: function (value) {
+        return value * 100 + '%';
+      },
+      tolower:function(value){
+        return value.toLowerCase();
+      }
+
+    }
+  });
+</script>
+</body>
+</html>

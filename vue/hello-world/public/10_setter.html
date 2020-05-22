@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设置计算属性</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <div id="myapp">
+        <p>产品名称：Switch</p>
+        <p>产品价格：{{price}}美元</p>
+        <p>含税价格：{{priceInTax}} 美元</p>
+        <p>折合人民币：{{priceChinaRMB}}人民币</p>
+        <p>设置计算属性，同步更新元数据的值</p>
+        <p><button @click="addPriceTax(1580)">增加含税价格</button></p>
+    </div>
+</body>
+<script type="text/javascript">
+    var myapp = new Vue({
+        el:"#myapp",
+        data:{
+            price:1000,
+        },
+        computed:{
+            priceInTax:{
+                get:function(){
+                    return this.price*1.08;
+                },
+                set:function(value){
+                    this.price = value/1.08;
+                }
+            },
+            priceChinaRMB:function(){
+                return Math.round(this.priceInTax*7.5);
+            }
+        },
+        methods:{
+            addPriceTax:function(newValue){
+                this.priceInTax = newValue;
+            }
+        }
+    })
+</script>
+</html>

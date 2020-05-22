@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <meta charset="UTF-8">
+  <title>计算属性computed </title>
+</head>
+<body>
+<div id="myapp">
+  <p>自动获取一个产品的税.</p>
+  <p> my mac book pro's price is {{price}}.</p>
+  <p>函数价格：{{priceIntax}}</p>
+  <p>人民币价格:{{priceChineseRMB}}</p>
+</div>
+
+<script type="text/javascript">
+  var myapp = new Vue({
+    el: "#myapp",
+    data: {
+      message: "hello vue.js ,filters",
+      num:0.03,
+      price:10800,
+    },
+    computed:{
+      priceIntax:function(){
+        return this.price * 1.1;
+      },
+      priceChineseRMB:function(){
+        return Math.round(this.priceIntax/1);
+      }
+    }
+  });
+</script>
+</body>
+</html>

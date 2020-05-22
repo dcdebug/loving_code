@@ -1,11 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <meta charset="UTF-8">
     <title>Vue.JS</title>
 </head>
 <body>
-
+<div id="myapp">
+    <h3>游戏列表</h3>
+    <div v-if="seen">2020年武汉肺炎死亡人数</div>
+    <ol>
+        <li v-for="country in countries ">{{country.title}}/{{country.num}}</li>
+    </ol>
+</div>
+<script>
+    var myApp = new Vue({
+        el:"#myapp",
+        data:{
+            seen:true,
+            countries:[
+                {title:'Amercian',num:4000},
+                {title:"Chinese",num:3000000},
+                {title:"Russia",num:300032432432},
+            ]
+        }
+        }
+    );
+</script>
 </body>
 </html>

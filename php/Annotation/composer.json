@@ -1,0 +1,11 @@
+{
+    "name": "darry/annotation",
+    "type": "library",
+    "authors": [
+        {
+            "name": "d.c",
+            "email": "chengyue.wang@iservernetwork.com"
+        }
+    ],
+    "require": {}
+}

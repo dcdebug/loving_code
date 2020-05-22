@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>显示元素</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+   <p>列表渲染</p>
+    <ul>
+        <li v-for="(game,index) in games">{{index}}-- {{game.title}}  价格是:{{game.price}}</li>
+    </ul>
+</div>
+<script type="text/javascript">
+    var myapp = new Vue({
+        el:'#myapp',
+        data:{
+            games:[
+                {title :"games 1",price:100},
+                {title :"games 2",price:100},
+                {title :"games 3",price:100},
+                {title :"games 4",price:100},
+                {title :"games 5",price:100},
+            ]
+        }
+    });
+</script>
+</body>
+</html>

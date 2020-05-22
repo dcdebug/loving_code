@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件传递数据</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+
+    <p>为组件传递数据</p>
+    <h2>你的成绩是：</h2>
+    <test-result :score="50"></test-result>
+    <test-result :score="60"></test-result>
+    <test-result :score="70"></test-result>
+    <test-result :score="80"></test-result>
+    <test-result :score="90"></test-result>
+    <test-result :score="100"></test-result>
+</div>
+<script type="text/javascript">
+    Vue.component('test-result',{
+        props:['score'],
+        template:"<div><strong>{{score}}</strong>分,{{testResult}}</div>",
+        computed:{
+            testResult:function(){
+                var strResult = "";
+                if(this.score <60){
+                    strResult = "不及格";
+                }else if(this.score <70){
+                    strResult =" Just So So";
+                }else if(this.score <80){
+                    strResult = " 需要加油";
+                }else if(this.score <90){
+                    strResult = " 很好，良好";
+                }else{
+                    strResult = "优秀";
+                }
+                return strResult;
+            }
+        }
+    })
+    //
+    var myapp = new Vue({
+       el:"#myapp",
+       data:{
+
+       }
+    });
+</script>
+</body>
+</html>

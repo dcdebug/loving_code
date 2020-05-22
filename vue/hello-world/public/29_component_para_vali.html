@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件传递参数验证</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <h3>个人信息</h3>
+    <input type="text" v-model="username">
+    <show-member-info  :name="username" :age="25">啊啊啊啊</show-member-info>
+</div>
+<script type="text/javascript">
+  Vue.component('show-member-info',{
+      props:{
+          test:{
+              type:String,
+              required:true,
+          },
+          name:{
+              type:String,
+              required:true,
+          },
+          age:{
+              type:Number,
+              validator:function(value){
+                  return value>=0&&value<=120;
+              }
+          },
+          detail:{
+              type:Object,
+              default:function(){
+                  return {
+                      address:'US',
+                      language:'English'
+                  }
+              }
+          }
+      },
+      template:'<div><slot></slot>{{test}}姓名:{{this.name}}<br/>' +
+          '年龄:{{this.age}}<br/>' +
+          '地址:{{this.detail.address}}<br/>' +
+          '语言:{{this.detail.language}}<slot></slot></div>'
+  });
+  var myapp = new Vue({
+      el:'#myapp',
+      data:{
+            username:'dc'
+      }
+  })
+</script>
+</body>
+</html>

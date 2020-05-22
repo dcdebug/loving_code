@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>事件处理器</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <p>表单控件绑定</p>
+    <input type="text" v-model="message" placeholder="来呀，编辑我呀">
+    <p>Message is :{{message}}</p>
+</div>
+<script type="text/javascript">
+    var myapp = new Vue({
+        el: '#myapp',
+        data:{
+            message:'我喜欢杨宇儿'
+        },
+        methods:{
+
+        },
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <meta charset="UTF-8">
+    <title>Component 组件</title>
+</head>
+<body>
+  <div id="myapp">
+      <h3>将data数据在component 组件中显示</h3>
+      <ol>
+        <game-item v-for="item in games" v-bind:game="item"></game-item>
+
+      </ol>
+    <component-a></component-a>
+    <component-b></component-b>
+    <component-c></component-c>
+    <component-d></component-d>
+    <component-e></component-e>
+
+  </div>
+</body>
+<script type="text/javascript">
+  //组件定义
+  Vue.component('game-item',{
+    props:['game','public_time'],
+    template:'<li>游戏名称:{{game.title}},发布时间:{{game.public_time}},作者:{{game.author}}</li>'
+  });
+  Vue.component('component-a',{
+
+  });
+  Vue.component('component-b',{
+    props:['game'],
+    template:'<li>Test Test Test 你离开,我一点办法都没有</li>',
+  });
+  Vue.component('component-c',{
+    props:['game'],
+    template:'<li>DouDing 和  YuEr</li>'
+  });
+  Vue.component('component-d',{
+    props:['game'],
+    template:'<li>component-d</li>'
+  });
+  Vue.component('component-e',{
+    props:['game'],
+    template:'<li>component-e</li>'
+  });
+  var vue = new Vue({
+    el:"#myapp",
+    data:{
+      games :[
+        {title : '斗地主',public_time:'2002-09-18',author:'JKRonging'},
+        {title : '魂斗罗',public_time:'2002-09-18',author:'JKRonging'},
+        {title : ' none ',public_time:'2002-09-18',author:'JKRonging'},
+        {title : ' YuEr ',public_time:'2002-09-18',author:'JKRonging'},
+        {title : "DouDing",public_time:'2002-09-18',author:'JKRonging'},
+        {title : "组件的定义",public_time:'2002-09-18',author:'JKRonging'}
+      ],
+    }
+  });
+</script>
+</html>

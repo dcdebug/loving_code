@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>局部组件</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <p>组件的基础知识:Component , Portlet </p>
+    <today-weather></today-weather>
+</div>
+<script type="text/javascript">
+
+    var WeatherComponent ={
+        template: '<div style="color:red;">今天下雨，出不去啦，干什么呢？看Youtube喽 -- only used Vue内</div>'
+    };
+    //声明一个页面Vue对象
+    var myapp = new Vue({
+        el: '#myapp',
+        data:{
+
+        },
+        components:{
+            'today-weather':WeatherComponent
+        }
+    });
+</script>
+</body>
+</html>

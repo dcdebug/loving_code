@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <meta charset="UTF-8">
+  <title>观察属性 </title>
+</head>
+<body>
+<div id="myapp">
+  <p>自动获取一个产品的税.</p>
+  <p> my mac book pro's price is {{price}}.</p>
+  <p>含税价格：{{priceInTax}}</p>
+  <p>折合人民币价格:{{priceChinaRMB}}</p>
+  <button @click="addPrice(1000)">add 1000 RMB</button>
+  <p>一旦一个变量出现变化，会监控变量的变化</p>
+</div>
+
+<script type="text/javascript">
+  var myapp = new Vue({
+    el: "#myapp",
+    data: {
+      price :30000,
+    },
+    computed:{
+      priceInTax :function(){
+        return this.price*1.08;
+      },
+      priceChinaRMB :function(){
+        return this.price/3;
+      }
+    },
+    watch:{ //watch 着变量price，如果price变量发生变化，就执行这个匿名函数
+      price:function(newValue,oldValue){
+        console.log(newValue,oldValue);
+        this.priceInTax = Math.round(this.price*1.08);
+        this.priceChinaRMB = Math.round(this.priceInTax/16.75);
+      }
+    },
+    methods:{
+      addPrice:function(newPrice){
+        this.price += newPrice;
+      }
+    }
+  });
+  //vue实例化以后赋值,或者使用上述的计算属性
+  myapp.price=9999;
+</script>
+</body>
+</html>

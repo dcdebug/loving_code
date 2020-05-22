@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单选按钮</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <p>单选按钮</p>
+    <h3>选择性别</h3>
+    <input type="radio" id="male" value="0" v-model="pickedSex">
+    <label for="male">男</label>
+    <input type="radio" id="female" value="1" v-model="pickedSex">
+    <label for="female">女</label>
+    <h3>选择爱好</h3>
+    <input type="radio" id="game" value="0" v-model="pickedHobby">
+    <label for="game">玩游戏</label>
+    <input type="radio" id="movie" value="1" v-model="pickedHobby">
+    <label for="movie">看电影</label>
+
+    <p>选择结果</p>
+    <p>性别:{{pickedSex_arr[pickedSex]}}</p>
+    <p>爱好:{{pickedHobby_arr[pickedHobby]}}</p>
+</div>
+<script type="text/javascript">
+    var myapp = new Vue({
+        el: '#myapp',
+        data: {
+            pickedSex: '',
+            pickedHobby: '',
+            pickedSex_arr: [
+                '男',
+                '女'
+            ],
+            pickedHobby_arr: [
+                '玩游戏',
+                '看电影'
+            ]
+        },
+        methods: {},
+    });
+</script>
+</body>
+</html>

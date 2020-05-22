@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件基础</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <p>组件的基础知识:Component , Portlet </p>
+    <today-weather></today-weather>
+</div>
+<script type="text/javascript">
+    //定义组件
+    Vue.component('today-weather',{
+        template:'<div style="color:green;">今天下雨，出不去啦，干什么呢？看Youtube吧</div>'
+    })
+    var myapp = new Vue({
+        el: '#myapp',
+
+    });
+</script>
+</body>
+</html>

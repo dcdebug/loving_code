@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表行组件</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <p>组件数据 :组件的数据函数，使组件可以动态显示各种数据 </p>
+    <div>今天的天气是<today-weather/></div>
+</div>
+<script type="text/javascript">
+    Vue.component('today-weather',{
+        template:'<strong>{{todayWeather}}</strong>',
+        /*data:{
+            todayWeather:"雨夹雪" //组件数据属性
+        }*/
+        data:function(){
+            return {
+                todayWeather:"雨夹雪"
+            }
+        }
+
+    });
+    var myapp = new Vue({
+        el:"#myapp"
+    });
+</script>
+</body>
+</html>

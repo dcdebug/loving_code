@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <title>Button 按钮事件</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+</head>
+<body>
+  <h3>知识点</h3>
+    <ul>
+      <li> v-on :为页面上的控件绑定事件：</li>
+      <li>keydown,keyup,click,dbclick,load,ted...</li>
+    </ul>
+  <div id="myapp">
+      <p> your like games is :{{mygame}}</p>
+      <button v-on:click="btnClick('my world')">我的世界</button>
+      <button v-on:click="btnClick('gta')">gta</button>
+      <button v-on:click="btnClick('nz')">逆战</button>
+      <button v-on:click="btnClick('deemo')">deemo</button>
+      <button @click="btnClick('YuEr')">YuEr</button>
+      <button v-on:dblclick="double_click('YuEr')">DbClick</button>
+
+  </div>
+<script type="text/javascript">
+  var myapp = new Vue({
+      el:"#myapp",
+      data:{
+        mygame:'Dou Ding'
+      },
+      methods:{
+        btnClick:function(pname){
+          this.mygame = pname;
+        },
+        double_click:function(test){
+          this.mygame = "test "+test;
+        }
+
+      }
+  });
+</script>
+</body>
+</html>

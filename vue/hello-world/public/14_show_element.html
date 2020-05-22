@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>显示元素</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <p>控制某一元素的显示与否</p>
+    <h3 v-show="result">机械师新一代游戏笔记本Machine :</h3>
+    <p v-show="price">价格是：99999人民币</p>
+    <h5 v-show="result">v-show 根据v-show绑定的元素的值，判断是否显示</h5>
+    <button @click="v_show">考试成绩</button>
+</div>
+<script type="text/javascript">
+    var myapp = new Vue({
+        el:'#myapp',
+        data:{
+            result:true,
+            price:false
+        },
+        methods:{
+            v_show:function(){
+                this.result = !this.result;
+                this.price=!this.price;
+            }
+        }
+    });
+</script>
+</body>
+</html>

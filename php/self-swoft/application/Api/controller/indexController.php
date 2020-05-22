@@ -1,16 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: darry
- * Date: 2020-04-03
- * Time: 01:44
- */
 
 namespace App\Api\Controller;
 
 /**
  * Class indexController
- * @Controller(prefix='index')
+ * @Controller(prefix='/index')
  * @package App\Api\Controller
  */
 class indexController
@@ -21,15 +15,15 @@ class indexController
     public function index()
     {
         //$this->test();
-        echo "indexing";
+        echo "indexing".PHP_EOL;
+        return "indexing-test";
     }
 
     /**
      * @RequestMapping(route="test")
      */
-    protected function test()
+    public function test()
     {
-
         $start = memory_get_usage();
         echo $start.PHP_EOL;
         $j = 1;

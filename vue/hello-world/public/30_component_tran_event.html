@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件传递事件</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <h3>人生加法</h3>
+    <label for="number">输入数字</label>
+    <input id="number"  type="number" v-model.number="num">
+    <add-method :a="6" :b="num" v-on:add_event="getAddResult"></add-method>
+    <hr/>
+    <h3>{{result}}</h3>
+</div>
+<script type="text/javascript">
+    Vue.component('add-method',{
+        props:{
+            a:{
+                type:Number,
+                required:true,
+            },
+            b:{
+                type:Number,
+                validator:function(value){
+                    if(value>=0){
+                        return int(value);
+                    }else{
+                        return 0;
+                    }
+                }
+            }
+        },
+        template:'<div><button v-on:click="add">加法</button></div>',
+        methods:{
+            add:function(){
+                var value =0;
+                console.log(this.b);
+                value = this.a+this.b;
+                this.$emit('add_event',{
+                    result:value
+                });
+            }
+        }
+    });
+    var myapp = new Vue({
+        el:"#myapp",
+        data:{
+            result :0,
+            num :0
+        },
+        methods:{
+            getAddResult:function(pval){
+                this.result = pval.result;
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

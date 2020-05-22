@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <meta charset="UTF-8">
+  <title>Vue 用户输入</title>
+</head>
+<body>
+
+<div id="input">
+  <div style="display:block;" v-if="seen">
+    <h3> Vue 处理用户输入</h3>
+    <ul>
+      <li>v-model 数据绑定 input </li>
+      <li>select</li>
+      <li>textarea</li>
+      <li>components</li>
+    </ul>
+
+    <p> 你最喜欢的游戏是：{{mygame}}</p>
+    <input v-model="mygame">
+    <textarea v-model = "mygame"></textarea>
+    <br/>
+    <select>
+      <option v-model="mygame">请您选择:{{mygame}}</option>
+    </select>
+    <br/>
+    <button v-model="mygame">{{mygame}}</button>
+  </div>
+</div>
+<script type="text/javascript">
+
+  var myapp = new Vue({
+    el:"#input",
+    data:{
+      seen:true,
+      mygame:"魂斗罗",
+      input_data:{
+
+      }
+    }
+  });
+
+
+
+</script>
+</body>
+</html>

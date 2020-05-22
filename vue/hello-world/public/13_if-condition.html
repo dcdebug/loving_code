@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Class 绑定</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+   <h3 v-if="result === 0">成绩未公布</h3>
+    <h3 v-else-if="result <60">{{result}}分 - 考试成绩不及格</h3>
+    <h3 v-else-if="result <80">{{result}}分 - 继续努力</h3>
+    <h3 v-else>{{result}}分 - 干的不错，继续保持</h3>
+    <button @click="showResult">显示成绩</button>
+    <input v-model="result">
+</div>
+</body>
+<script type="text/javascript">
+    var myapp = new Vue({
+        el: '#myapp',
+        data: {
+           result :0
+        },
+        methods: {
+            showResult:function(){
+                this.result = Math.round(Math.random()*100);
+            }
+        }
+    })
+</script>
+</html>

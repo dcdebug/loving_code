@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 插槽slot</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <h3>Vue插槽的介绍：</h3>
+    <p> slot是父组件与子组件的通讯方式，可以将父组件的内容显示在子组件中</p>
+    <say-to pname="koma">
+        你的视频质量太差了
+    </say-to>
+    <say-to pname="mike">
+        你要努力，但是不要学习Koma
+    </say-to>
+    <say-to pname="john">
+        你最棒，教教他们两个
+    </say-to>
+</div>
+<script type="text/javascript">
+    //定义一个组件
+    Vue.component('say-to',{
+        props:['pname'],
+        template:'<div>你好,<strong>{{pname}}</strong>!<slot></slot></div>'
+    });
+   var myapp = new Vue({
+       el:'#myapp',
+       data:{
+
+       }
+   })
+
+</script>
+</body>
+</html>

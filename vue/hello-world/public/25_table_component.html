@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表行组件</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="myapp">
+    <p>组件的基础知识:Component , Portlet 表格的is属性 </p>
+    <h3>2020年最期待的游戏</h3>
+    <table border="1">
+        <tbody>
+        <tr>
+            <td>编号</td>
+            <td>游戏名</td>
+        </tr>
+        <tr is="my-row1"></tr>
+        <tr is="my-row2"></tr>
+        <tr is="my-row3"></tr>
+       <!-- <my-row1></my-row1>
+        <my-row2></my-row2>
+        <my-row3></my-row3>-->
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    Vue.component("my-row1",{
+        template:'<tr><td>(1)</td><td>NieR Automata</td></tr>'
+    });
+    Vue.component("my-row2",{
+        template:'<tr><td>(2)</td><td>NieR 2</td></tr>'
+    });
+    Vue.component("my-row3",{
+        template:'<tr><td>(3)</td><td>NieR 3</td></tr>'
+    });
+    //实例话Vue对象
+    var myapp = new Vue({
+        el:"#myapp",
+        data:{
+
+        },
+        methods:{
+
+        },
+        components:{
+
+        }
+    });
+</script>
+</body>
+</html>
