@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+</head>
+<body>
+<div id = "myapp">
+    <textarea name="send_message" class="" v-model="send_message"></textarea>
+    <button type="button" class="btn btn-primary" @click="sendMessage()">确定</button>
+    <span>{{send_message}}</span>
+</div>
+<script type="text/javascript">
+    var myapp = new Vue({
+        el:'#myapp',
+        data:{
+            receive_message:"",
+            send_message : '',
+        },
+        methods:{
+            sendMessage: function(){
+                const WebSocket = request("ws");
+
+                const ws = new WebSocket('ws://127.0.0.1:9502/websocket');
+                ws.on('open',function open(){
+                   console.log('On Line');
+                   ws.send("I'm back");
+                });
+                console.log(message);
+            }
+        }
+    })
+</script>
+</body>
+</html>
